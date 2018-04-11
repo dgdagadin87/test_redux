@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
+import { Route, Switch } from 'react-router-dom';
 
 import {loadApplication} from '../actions/application';
+
+import HeaderComponent from './rootComponents/Header';
+
+import HomeComponent from './moduleComponents/HomeComponent';
+import BooksComponent from './moduleComponents/BooksComponent';
+import AboutComponent from './moduleComponents/AboutComponent';
 
 const mapStateToProps = state => {
     return {
@@ -49,7 +56,16 @@ class AppContainer extends Component {
         }
 
         return (
-            <div>Application Container</div>
+            <div>
+                <HeaderComponent />
+
+                <Switch>
+                    <Route exact path="/" component={HomeComponent}/>
+                    <Route path="/books" component={BooksComponent} />
+                    <Route path="/about" component={AboutComponent} />
+                </Switch>
+
+            </div>
         );
     }
 
