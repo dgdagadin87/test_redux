@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { Route, Switch } from 'react-router-dom';
 
+import Axios from 'axios';
+
 import {loadApplication} from '../actions/application';
 
-import HeaderComponent from './rootComponents/Header';
+import {defaultSettings, urlSettings} from '../config/settings';
+import {createUrl} from '../core/coreUtils';
 
+import HeaderComponent from './rootComponents/Header';
 import HomeComponent from './moduleComponents/HomeComponent';
 import BooksComponent from './moduleComponents/BooksComponent';
 import AboutComponent from './moduleComponents/AboutComponent';
@@ -40,9 +44,15 @@ class AppContainer extends Component {
             }
         };
 
-        setTimeout(() => {
-            loadApplication(appLoadedData);
-        }, 1000);
+        Axios.get(createUrl(defaultSettings, urlSettings['getCommonData']))
+        .then( (response) => {
+
+            const {data : {data = {}}} = response;
+            loadApplication(Object.assign({data: data}, {isLoaded: true}));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     render () {
@@ -57,7 +67,7 @@ class AppContainer extends Component {
 
         return (
             <div>
-                <HeaderComponent appData={appData} />
+                <HeaderComponent commonData={appData} />
 
                 <Switch>
                     <Route exact path="/" component={HomeComponent}/>

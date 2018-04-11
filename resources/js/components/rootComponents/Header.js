@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import MenuLinkComponent from './MenuLinkComponent'
 
 class Header extends Component {
 
     render () {
+
+        const {commonData: {user = {}}} = this.props;
+
+        console.log(user);
 
         return (
             <div>
@@ -24,10 +28,17 @@ class Header extends Component {
                     to={'/about'}
                     label={'О программе'}
                 />
+
+                <div style={{padding: '10px 0'}}>Hellow, {user.userName}!</div>
+
             </div>
         );
     }
 
 }
+
+Header.propTypes = {
+    commonData: PropTypes.object.isRequired
+};
 
 export default Header;
