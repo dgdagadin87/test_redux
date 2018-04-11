@@ -34,19 +34,8 @@ class AppContainer extends Component {
 
         const {loadApplication} = this.props;
 
-        const appLoadedData = {
-            isLoaded: true,
-            data: {
-                user: {
-                    login: 'Medved',
-                    name: 'Медведь'
-                }
-            }
-        };
-
         Axios.get(createUrl(defaultSettings, urlSettings['getCommonData']))
         .then( (response) => {
-
             const {data : {data = {}}} = response;
             loadApplication(Object.assign({data: data}, {isLoaded: true}));
         })
