@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import application from './application';
+import application from '../reducers/application';
 
 const allReducers = combineReducers({
     commonData: application
 });
 
-export default allReducers;
+export default allReducers

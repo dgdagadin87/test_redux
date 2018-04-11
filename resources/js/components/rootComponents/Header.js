@@ -9,8 +9,6 @@ class Header extends Component {
 
         const {commonData: {user = {}}} = this.props;
 
-        console.log(user);
-
         return (
             <div>
                 <MenuLinkComponent
