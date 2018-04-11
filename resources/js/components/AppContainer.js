@@ -57,7 +57,7 @@ class AppContainer extends Component {
 
         return (
             <div>
-                <HeaderComponent />
+                <HeaderComponent appData={appData} />
 
                 <Switch>
                     <Route exact path="/" component={HomeComponent}/>
