@@ -1,8 +1,19 @@
-export default function (state = {isLoaded: false, data: false}, action) {
+const initialState = {
+    isLoaded: false,
+    data: false
+};
+
+export default function (state = null, action) {
     switch (action.type) {
         case 'APP_COMMON_LOAD':
             return action.payload;
         default:
-            return state;
+            if (state === null) {
+                return initialState;
+            }
+            else {
+                return state;
+            }
+
     }
 }
