@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import testReducer from './testReducer';
+import application from './application';
 
 const allReducers = combineReducers({
-    testData: testReducer
+    commonData: application
 });
 
 export default allReducers;
