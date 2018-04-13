@@ -3,11 +3,36 @@ import PropTypes from 'prop-types';
 
 import MenuLinkComponent from './MenuLinkComponent'
 
+const mapStateToProps = state => {
+    return {
+        title: state.commonData.title
+    }
+};
+
 class Header extends Component {
+
+    constructor(props) {
+        super();
+
+        this.state = {
+            title: props.title
+        };
+    }
+
+    componentWillReceiveProps(props) {
+
+        const {title} = props;
+
+        this.setState({
+            title: title
+        });
+    }
 
     render () {
 
         const {commonData: {user = {}}} = this.props;
+
+        const {title} = this.state;
 
         return (
             <div>
@@ -29,6 +54,8 @@ class Header extends Component {
 
                 <div style={{padding: '10px 0'}}>Hellow, {user.userName}!</div>
 
+                <strong>{title}</strong>
+
             </div>
         );
     }
@@ -36,7 +63,8 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-    commonData: PropTypes.object.isRequired
+    commonData: PropTypes.object.isRequired,
+    title: PropTypes.any.isRequired
 };
 
 export default Header;

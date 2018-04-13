@@ -4,3 +4,10 @@ export const loadApplication = (appData) => {
         payload: appData
     }
 };
+
+export const setTitle = (headerData) => {
+    return {
+        type: 'APP_SET_HEADER',
+        payload: headerData
+    }
+};

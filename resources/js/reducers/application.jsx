@@ -1,4 +1,5 @@
 const initialState = {
+    title: '',
     isLoaded: false,
     data: false
 };
@@ -14,6 +15,9 @@ export default function (state = null, action) {
             return payload;
         case 'ERROR_APP_COMMON':
             return payload;
+        case 'APP_SET_HEADER':
+            document.title = payload;
+            return {...returnState, title: payload};
         default:
             return returnState;
 

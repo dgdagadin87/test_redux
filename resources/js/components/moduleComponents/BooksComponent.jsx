@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Axios from 'axios';
 
+import {setTitle} from '../../actions/application';
 import {
     loadBooks,
     startBooksGlobalLoading,
@@ -30,6 +31,7 @@ const mapStateToProps = state => {
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
+        setTitle: setTitle,
         loadBooks: loadBooks,
         startBooksLoading: startBooksLoading,
         startBooksGlobalLoading: startBooksGlobalLoading,
@@ -41,9 +43,11 @@ class Books extends Component {
 
     componentDidMount() {
 
-        let {collection} = this.props;
+        let {setTitle, collection, globalLoading, disabled} = this.props;
 
-        if (collection === false) {
+        setTitle('Список книг');
+
+        if (collection === false && (!globalLoading && !disabled)) {
             this._loadData();
         }
     }

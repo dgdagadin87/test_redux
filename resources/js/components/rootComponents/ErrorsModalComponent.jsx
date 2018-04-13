@@ -26,8 +26,10 @@ class Errors extends Component {
 
     _renderErrorTemplate(error, index) {
 
+        const errorText = !!error ? error : 'Неизвестная ошика';
+
         return (
-            <div key={index}>{error}</div>
+            <div key={index}>{errorText}</div>
         );
     }
 
@@ -48,7 +50,6 @@ class Errors extends Component {
             return null;
         }
     }
-
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Errors);

@@ -19,7 +19,8 @@ import AboutComponent from './moduleComponents/AboutComponent';
 const mapStateToProps = state => {
     return {
         isLoaded: state.commonData.isLoaded,
-        appData: state.commonData.data
+        appData: state.commonData.data,
+        title: state.commonData.title
     }
 };
 
@@ -38,7 +39,7 @@ class AppContainer extends Component {
         Axios.get(createUrl(defaultSettings, urlSettings['getCommonData']))
         .then( (response) => {
             const {data : {data = {}}} = response;
-            loadApplication(Object.assign({data: data}, {isLoaded: true}));
+            loadApplication(Object.assign({data: data}, {isLoaded: true, title: 'Начало работы'}));
         })
         .catch((error) => {
             console.log(error);
@@ -47,7 +48,7 @@ class AppContainer extends Component {
 
     render () {
 
-        const {isLoaded, appData} = this.props;
+        const {isLoaded, appData, title} = this.props;
 
         if (!isLoaded) {
             return (
@@ -57,7 +58,7 @@ class AppContainer extends Component {
 
         return (
             <div>
-                <HeaderComponent commonData={appData} />
+                <HeaderComponent commonData={appData} title={title} />
 
                 <Switch>
                     <Route exact path="/" component={HomeComponent}/>

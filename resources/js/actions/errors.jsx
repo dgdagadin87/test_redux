@@ -1,6 +1,6 @@
-export const cleanErrors = (appData) => {
+export const cleanErrors = (errorsData) => {
     return {
         type: 'ERRORS_CLEAN',
-        payload: appData
+        payload: errorsData
     }
 };
