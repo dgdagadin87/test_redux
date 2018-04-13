@@ -14,20 +14,19 @@ export default function (state = null, action) {
 
     const {payload} = action;
 
+    let returnState = !!state ? state : initialState;
+
     switch (action.type) {
-        case 'BOOKS_LIST_LOAD':
+        case 'BOOKS_LIST_LOADED':
             return {...payload, disabled: false, globalLoading: false};
         case 'START_BOOKS_LOADING':
             return {...payload, disabled: true, globalLoading: false};
         case 'START_BOOKS_GLOBAL_LOADING':
             return {...payload, disabled: false, globalLoading: true};
+        case 'ERROR_BOOKS_LOADING':
+            return {...returnState, disabled: false, globalLoading: false};
         default:
-            if (state === null) {
-                return initialState;
-            }
-            else {
-                return state;
-            }
+            return returnState;
 
     }
 }

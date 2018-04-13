@@ -4,16 +4,14 @@ const initialState = {
 };
 
 export default function (state = null, action) {
+
+    let returnState = !!state ? state : initialState;
+
     switch (action.type) {
         case 'APP_COMMON_LOAD':
             return action.payload;
         default:
-            if (state === null) {
-                return initialState;
-            }
-            else {
-                return state;
-            }
+            return returnState;
 
     }
 }
