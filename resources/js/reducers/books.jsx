@@ -12,7 +12,7 @@ const initialState = {
 
 export default function (state = null, action) {
 
-    const {payload} = action;
+    let {payload} = action;
 
     let returnState = !!state ? state : initialState;
 
@@ -24,7 +24,8 @@ export default function (state = null, action) {
         case 'START_BOOKS_GLOBAL_LOADING':
             return {...payload, disabled: false, globalLoading: true};
         case 'ERROR_BOOKS_LOADING':
-            return {...returnState, disabled: false, globalLoading: false};
+            const {data = {}} = payload;
+            return {...data, disabled: false, globalLoading: false};
         default:
             return returnState;
 

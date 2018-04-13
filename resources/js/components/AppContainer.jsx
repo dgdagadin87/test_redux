@@ -11,6 +11,7 @@ import {defaultSettings, urlSettings} from '../config/settings';
 import {createUrl} from '../core/coreUtils';
 
 import HeaderComponent from './rootComponents/Header';
+import ErrorsComponent from './rootComponents/ErrorsModalComponent';
 import HomeComponent from './moduleComponents/HomeComponent';
 import BooksComponent from './moduleComponents/BooksComponent';
 import AboutComponent from './moduleComponents/AboutComponent';
@@ -64,6 +65,7 @@ class AppContainer extends Component {
                     <Route path="/about" component={AboutComponent} />
                 </Switch>
 
+                <ErrorsComponent />
             </div>
         );
     }

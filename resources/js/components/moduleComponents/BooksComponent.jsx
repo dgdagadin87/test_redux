@@ -58,7 +58,7 @@ class Books extends Component {
     _loadData() {
 
         const {collection, sortField, sortType, page, searchTerm} = this.props;
-        const {startBooksGlobalLoading, startBooksLoading, loadBooks} = this.props;
+        const {startBooksGlobalLoading, startBooksLoading, loadBooks, errorBooksLoading} = this.props;
 
         const dataForAction = this._getDataForAction();
 
@@ -80,6 +80,17 @@ class Books extends Component {
             params: queryData
         })
         .then( (response) => {
+
+            const responseData = response.data || {};
+
+            if (!responseData.isSuccess) {
+                errorBooksLoading({
+                    errorMessage: responseData.message,
+                    data: dataForAction
+                });
+                return;
+            }
+
             const {data: {data = {}}} = response;
             const {collection = [], filter = {}, paging = {}} = data;
 
