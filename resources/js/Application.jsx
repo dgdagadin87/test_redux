@@ -7,7 +7,7 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
 import history from './service/history';
-import allReducers from "./service/reducers";
+import allReducers from './service/reducers';
 
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
