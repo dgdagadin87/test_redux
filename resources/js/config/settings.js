@@ -5,7 +5,8 @@ let defaultSettings = {
 };
 
 let urlSettings = {
-    'getCommonData'  : '/common'
+    'getCommonData'  : '/common',
+    'getBooksData'  : '/books'
 };
 
 export {defaultSettings, urlSettings};

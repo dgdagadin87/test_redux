@@ -6,19 +6,12 @@ const NODE_MODULES_PATH = path.resolve('node_modules');
 
 var config = {
     devtool: 'eval-source-map',
-    entry:  __dirname + "/resources/js/Application.js",
+    entry:  __dirname + "/resources/js/Application.jsx",
     output: {
         path: __dirname + "/resources/js/bundle",
         filename: "bundle.js"
     },
     module: {
-        resolve: {
-            modules: [
-                NODE_MODULES_PATH,
-                RESOURCE_PATH
-            ],
-            extensions: ['', '.js', '.jsx']
-        },
         loaders: [
             {
                 test: /\.jsx?$/,
@@ -42,6 +35,13 @@ var config = {
                 loader: "url-loader?mimetype=image/gif"
             }
         ]
+    },
+    resolve: {
+        modules: [
+            NODE_MODULES_PATH,
+            RESOURCE_PATH
+        ],
+        extensions: ['', '.js', '.jsx']
     },
     devServer: {
         contentBase: "./resources/html",
