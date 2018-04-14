@@ -3,12 +3,6 @@ import PropTypes from 'prop-types';
 
 import MenuLinkComponent from './MenuLinkComponent'
 
-const mapStateToProps = state => {
-    return {
-        title: state.commonData.title
-    }
-};
-
 class Header extends Component {
 
     constructor(props) {

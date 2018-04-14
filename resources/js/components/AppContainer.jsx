@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Axios from 'axios';
 
-import {loadApplication} from '../actions/application';
+import {loadApplication, errorAppLoading} from '../actions/application';
 
 import {defaultSettings, urlSettings} from '../config/settings';
 import {createUrl} from '../core/coreUtils';
@@ -26,7 +26,8 @@ const mapStateToProps = state => {
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadApplication: loadApplication
+        loadApplication: loadApplication,
+        errorAppLoading: errorAppLoading
     }, dispatch);
 }
 
@@ -34,7 +35,7 @@ class AppContainer extends Component {
 
     componentDidMount() {
 
-        const {loadApplication} = this.props;
+        const {loadApplication, errorAppLoading} = this.props;
 
         Axios.get(createUrl(defaultSettings, urlSettings['getCommonData']))
         .then( (response) => {
@@ -42,7 +43,11 @@ class AppContainer extends Component {
             loadApplication(Object.assign({data: data}, {isLoaded: true, title: 'Начало работы'}));
         })
         .catch((error) => {
-            console.log(error);
+            console.log('wat!!!');
+            const {message = ''} = error;
+            errorAppLoading({
+                errorMessage: message
+            });
         });
     }
 
@@ -52,7 +57,10 @@ class AppContainer extends Component {
 
         if (!isLoaded) {
             return (
-                <div>Wait, application is loading...</div>
+                <div>
+                    <div>Wait, application is loading...</div>
+                    <ErrorsComponent />
+                </div>
             );
         }
 
@@ -65,8 +73,6 @@ class AppContainer extends Component {
                     <Route path="/books" component={BooksComponent} />
                     <Route path="/about" component={AboutComponent} />
                 </Switch>
-
-                <ErrorsComponent />
             </div>
         );
     }

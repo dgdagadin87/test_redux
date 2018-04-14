@@ -13,8 +13,8 @@ export default function (state = null, action) {
     switch (action.type) {
         case 'APP_COMMON_LOAD':
             return payload;
-        case 'ERROR_APP_COMMON':
-            return payload;
+        case 'ERROR_APP_LOADING':
+            return initialState;
         case 'APP_SET_HEADER':
             document.title = payload;
             return {...returnState, title: payload};

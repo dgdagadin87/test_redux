@@ -9,6 +9,7 @@ export default function (state = null, action) {
     let returnState = !!state ? state : initialState;
 
     switch (action.type) {
+        case 'ERROR_APP_LOADING':
         case 'ERROR_BOOKS_LOADING':
             const {errorMessage = null} = payload;
             const errors = returnState.errors || [];

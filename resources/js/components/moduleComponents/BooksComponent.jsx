@@ -101,43 +101,13 @@ class Books extends Component {
             loadBooks({collection, ...filter, ...paging});
         })
         .catch((error) => {
-            console.log(error);
+
+            const {message = ''} = error;
+            errorBooksLoading({
+                errorMessage: message,
+                data: dataForAction
+            });
         });
-
-        /*ajaxQuery(
-            {
-                url: CUL(defaultSettings, urlSettings['getMyBooksData']),
-                data: queryData
-            },
-            {
-                afterSuccess: (result) => {
-                    if (!result.isSuccess) {
-                        this.setStats({
-                            globalLoading: false,
-                            disabled: false
-                        });
-                        globalEvents.trigger('showError', result);
-                        return;
-                    }
-
-                    this.setStats(
-                        Object.assign({}, {
-                            globalLoading: false,
-                            disabled: false
-                        }, this._getStateData(result.data))
-                    );
-
-                    this.mounted && globalEvents.trigger('setModuleData', result.data, 'mybooks');
-                },
-                afterError: (result) => {
-                    this.setStats({
-                        globalLoading: false,
-                        disabled: false
-                    });
-                    globalEvents.trigger('showError', result);
-                }
-            }
-        );*/
     }
 
     render () {
@@ -150,7 +120,12 @@ class Books extends Component {
         else {
 
             if (collection !== false) {
-                return (<div>Книги загружены</div>);
+                return (
+                    <div>
+                        Книги загружены
+                        <button onClick={this._loadData.bind(this)}>Обновить</button>
+                    </div>
+                );
             }
             else {
                 return (<div>!!!!!!!!!!!!!!</div>)
