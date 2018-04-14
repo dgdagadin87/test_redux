@@ -4,9 +4,16 @@ let defaultSettings = {
     'serverProtocol': 'http'
 };
 
+let pageSettings = {
+    'start' : 1,
+    'end': 1,
+    'left': 2,
+    'right': 2
+};
+
 let urlSettings = {
     'getCommonData'  : '/common',
     'getBooksData'  : '/mybooks'
 };
 
-export {defaultSettings, urlSettings};
+export {defaultSettings, pageSettings, urlSettings};
