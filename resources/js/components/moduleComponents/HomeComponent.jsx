@@ -1,7 +1,27 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
+import {setTitle} from '../../actions/application';
+
+const mapStateToProps = () => {
+    return {};
+};
+
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({
+        setTitle: setTitle
+    }, dispatch);
+}
 
 class Home extends Component {
+
+    componentDidMount() {
+
+        let {setTitle} = this.props;
+
+        setTitle('Домашняя страница');
+    }
 
     render () {
 
@@ -12,4 +32,4 @@ class Home extends Component {
 
 }
 
-export default connect()(Home);
+export default connect(mapStateToProps, matchDispatchToProps)(Home);
