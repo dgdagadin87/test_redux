@@ -45,7 +45,6 @@ class AppContainer extends Component {
             loadApplication(Object.assign({data: data}, {isLoaded: true, title: 'Начало работы'}));
         })
         .catch((error) => {
-            console.log('wat!!!');
             const {message = ''} = error;
             errorAppLoading({
                 errorMessage: message
@@ -71,10 +70,12 @@ class AppContainer extends Component {
                 <HeaderComponent commonData={appData} title={title} />
 
                 <Switch>
-                    <Route exact path="/" component={HomeComponent}/>
-                    <Route path="/books" component={BooksComponent} />
-                    <Route path="/about" component={AboutComponent} />
+                    <Route exact path="/" render={ (props) => <HomeComponent {...props} /> } />
+                    <Route path="/books" render={ (props) => <BooksComponent{...props} /> } />
+                    <Route path="/about" render={ (props) => <AboutComponent {...props} /> } />
                 </Switch>
+
+                <ErrorsComponent />
             </div>
         );
     }

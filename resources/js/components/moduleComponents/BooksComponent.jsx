@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import Axios from 'axios';
 
-import {setTitle} from '../../actions/application';
+import {setTitle, errorDefaultLoading} from '../../actions/application';
 import {
     loadBooks,
     startBooksGlobalLoading,
@@ -41,6 +41,7 @@ function matchDispatchToProps(dispatch) {
         startBooksLoading: startBooksLoading,
         startBooksGlobalLoading: startBooksGlobalLoading,
         errorBooksLoading: errorBooksLoading,
+        errorDefaultLoading: errorDefaultLoading
     }, dispatch);
 }
 
@@ -57,19 +58,12 @@ class Books extends Component {
         }
     }
 
-    _getDataForAction() {
-
-        const { collection, sortField, sortType, searchTerm, page, pages, totalCount, disabled, globalLoading } = this.props;
-
-        return { collection, sortField, sortType, searchTerm, page, pages, totalCount, disabled, globalLoading };
-    }
-
     _loadData(actionData = null) {
 
         const {collection, sortField, sortType, page, searchTerm} = this.props;
         const {startBooksGlobalLoading, startBooksLoading, loadBooks, errorBooksLoading} = this.props;
 
-        const dataForAction = !!actionData ? actionData : this._getDataForAction();
+        const dataForAction = !!actionData ? actionData : {};
 
         if (collection === false) {
             startBooksGlobalLoading(dataForAction);
@@ -109,28 +103,56 @@ class Books extends Component {
 
             const {message = ''} = error;
             errorBooksLoading({
-                errorMessage: message,
-                data: dataForAction
+                errorMessage: message
             });
         });
     }
 
     _onSortChange(sortData) {
 
-        //this.setStats(sortData, this._loadData.bind(this));
+        this._loadData(sortData);
     }
 
     _onPageChange(pageData) {
 
-        //this.setStats(pageData, this._loadData.bind(this));
+        this._loadData(pageData);
     }
 
     _onSearch(searchData) {
 
-        //this.setStats(searchData, this._loadData.bind(this));
+        this._loadData(searchData);
     }
 
     _onSendMail(bookId, emailToSend) {
+
+        const {errorDefaultLoading} = this.props;
+        const urlToSend = `${createUrl(defaultSettings, urlSettings['sendToMail'])}${bookId}`;
+
+        Axios.post(urlToSend, {
+            params: {
+                email: emailToSend
+            }
+        })
+            .then( (response) => {
+
+                const responseData = response.data || {};
+
+                if (!responseData.isSuccess) {
+                    errorDefaultLoading({
+                        errorMessage: responseData.message
+                    });
+                    return;
+                }
+
+                alert('Книга успешно отправлена по почте.');
+            })
+            .catch((error) => {
+
+                const {message = ''} = error;
+                errorDefaultLoading({
+                    errorMessage: message
+                });
+            });
 
         /*const {globalEvents} = this.props;
 

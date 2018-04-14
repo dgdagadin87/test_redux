@@ -17,7 +17,7 @@ function matchDispatchToProps(dispatch) {
 class Home extends Component {
 
     componentDidMount() {
-
+console.log(this.props);
         let {setTitle} = this.props;
 
         setTitle('Домашняя страница');

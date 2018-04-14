@@ -13,7 +13,8 @@ let pageSettings = {
 
 let urlSettings = {
     'getCommonData'  : '/common',
-    'getBooksData'  : '/mybooks'
+    'getBooksData'  : '/mybooks',
+    'sendToMail'     : '/sendtomail/'
 };
 
 export {defaultSettings, pageSettings, urlSettings};

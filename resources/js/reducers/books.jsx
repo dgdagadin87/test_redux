@@ -20,12 +20,11 @@ export default function (state = null, action) {
         case 'BOOKS_LIST_LOADED':
             return {...payload, disabled: false, globalLoading: false};
         case 'START_BOOKS_LOADING':
-            return {...payload, disabled: true, globalLoading: false};
+            return {...returnState, ...payload, disabled: true, globalLoading: false};
         case 'START_BOOKS_GLOBAL_LOADING':
-            return {...payload, disabled: false, globalLoading: true};
+            return {...returnState, ...payload, disabled: false, globalLoading: true};
         case 'ERROR_BOOKS_LOADING':
-            const {data = {}} = payload;
-            return {...data, disabled: false, globalLoading: false};
+            return {...returnState, disabled: false, globalLoading: false};
         default:
             return returnState;
 
