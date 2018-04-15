@@ -133,86 +133,61 @@ class Books extends Component {
                 email: emailToSend
             }
         })
-            .then( (response) => {
+        .then( (response) => {
 
-                const responseData = response.data || {};
+            const responseData = response.data || {};
 
-                if (!responseData.isSuccess) {
-                    errorDefaultLoading({
-                        errorMessage: responseData.message
-                    });
-                    return;
-                }
-
-                alert('Книга успешно отправлена по почте.');
-            })
-            .catch((error) => {
-
-                const {message = ''} = error;
+            if (!responseData.isSuccess) {
                 errorDefaultLoading({
-                    errorMessage: message
+                    errorMessage: responseData.message
                 });
-            });
-
-        /*const {globalEvents} = this.props;
-
-        ajaxQuery(
-            {
-                url: CUL(defaultSettings, urlSettings['sendToMail']) + bookId,
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    email: emailToSend
-                }
-            },
-            {
-                afterSuccess: (result) => {
-                    if (!result.isSuccess) {
-                        globalEvents.trigger('showError', result);
-                        return;
-                    }
-                    alert('Книга успешно отправлена по почте.');
-                },
-                afterError: (result) => {
-                    globalEvents.trigger('showError', result);
-                }
+                return;
             }
-        );*/
+
+            alert('Книга успешно отправлена по почте.');
+        })
+        .catch((error) => {
+
+            const {message = ''} = error;
+            errorDefaultLoading({
+                errorMessage: message
+            });
+        });
     }
 
     _onDeleteBook(bookId) {
-
-        /*const {globalEvents} = this.props;
 
         if (!confirm('Вы действительно хотите удалить книгу из раздела "Мои книги"?')) {
             return;
         }
 
-        this.setStats({
-            disabled: true
-        });
+        const {errorBooksLoading, startBooksLoading} = this.props;
+        const urlToSend = `${createUrl(defaultSettings, urlSettings['deleteMyBook'])}${bookId}`;
 
-        ajaxQuery(
-            {
-                url: CUL(defaultSettings, urlSettings['deleteMyBook']) + bookId
-            },
-            {
-                afterSuccess: (result) => {
-                    if (!result.isSuccess) {
-                        this.setStats({
-                            disabled: false
-                        });
-                        globalEvents.trigger('showError', result);
-                        return;
-                    }
-                    alert('Книга успешно удалена.');
-                    this._loadData();
-                },
-                afterError: (result) => {
-                    globalEvents.trigger('showError', result);
-                }
+        startBooksLoading({});
+
+        Axios.get(urlToSend)
+        .then( (response) => {
+
+            const responseData = response.data || {};
+
+            if (!responseData.isSuccess) {
+                errorBooksLoading({
+                    errorMessage: responseData.message
+                });
+                return;
             }
-        );*/
+
+            alert('Книга успешно удалена.');
+            this._loadData();
+        })
+        .catch((error) => {
+
+            const {message = ''} = error;
+            errorBooksLoading({
+                errorMessage: message
+            });
+        });
     }
 
     _renderMyBooks() {
@@ -319,8 +294,6 @@ class Books extends Component {
             </div>
         );
     }
-
-
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Books);
