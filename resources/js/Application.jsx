@@ -4,7 +4,8 @@ import 'core-js/es6/set';
 import React from 'react';
 import reactDom from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk'
 
 import history from './service/history';
 import allReducers from './service/reducers';
@@ -14,7 +15,7 @@ import { ConnectedRouter } from 'react-router-redux';
 
 import AppContainer from './components/AppContainer';
 
-const store = createStore(allReducers);
+const store = createStore(allReducers, applyMiddleware(thunk));
 
 reactDom.render(
     <Provider store={store}>

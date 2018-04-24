@@ -2,18 +2,14 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 
-import Axios from 'axios';
+import {pageSettings} from '../../config/settings';
 
-import {setTitle, errorDefaultLoading} from '../../actions/application';
 import {
-    loadBooks,
-    startBooksGlobalLoading,
-    startBooksLoading,
-    errorBooksLoading
+    setBooksTitle,
+    asyncGetBooks,
+    asyncSendBookToMail,
+    asyncDeleteBook
 } from '../../actions/books';
-
-import {createUrl} from '../../core/coreUtils';
-import {defaultSettings, urlSettings, pageSettings} from '../../config/settings';
 
 import PreloaderComponent from '../uiComponents/LargePreloaderComponent';
 import SearchComponent from '../uiComponents/SearchComponent';
@@ -35,13 +31,12 @@ const mapStateToProps = state => {
 };
 
 function matchDispatchToProps(dispatch) {
+
     return bindActionCreators({
-        setTitle: setTitle,
-        loadBooks: loadBooks,
-        startBooksLoading: startBooksLoading,
-        startBooksGlobalLoading: startBooksGlobalLoading,
-        errorBooksLoading: errorBooksLoading,
-        errorDefaultLoading: errorDefaultLoading
+        setTitle: setBooksTitle,
+        asyncLoadBooks: asyncGetBooks,
+        asyncSendBookToMail: asyncSendBookToMail,
+        asyncDeleteBook: asyncDeleteBook
     }, dispatch);
 }
 
@@ -61,16 +56,9 @@ class Books extends Component {
     _loadData(actionData = null) {
 
         const {collection, sortField, sortType, page, searchTerm} = this.props;
-        const {startBooksGlobalLoading, startBooksLoading, loadBooks, errorBooksLoading} = this.props;
+        const {asyncLoadBooks} = this.props;
 
         const dataForAction = !!actionData ? actionData : {};
-
-        if (collection === false) {
-            startBooksGlobalLoading(dataForAction);
-        }
-        else {
-            startBooksLoading(dataForAction);
-        }
 
         let queryData = {
             sortField,
@@ -79,33 +67,7 @@ class Books extends Component {
             searchTerm
         };
 
-        Axios.get(createUrl(defaultSettings, urlSettings['getBooksData']), {
-            params: queryData
-        })
-        .then( (response) => {
-
-            const responseData = response.data || {};
-
-            if (!responseData.isSuccess) {
-                errorBooksLoading({
-                    errorMessage: responseData.message,
-                    data: dataForAction
-                });
-                return;
-            }
-
-            const {data: {data = {}}} = response;
-            const {collection = [], filter = {}, paging = {}} = data;
-
-            loadBooks({collection, ...filter, ...paging});
-        })
-        .catch((error) => {
-
-            const {message = ''} = error;
-            errorBooksLoading({
-                errorMessage: message
-            });
-        });
+        asyncLoadBooks(collection, dataForAction, queryData);
     }
 
     _onSortChange(sortData) {
@@ -125,34 +87,9 @@ class Books extends Component {
 
     _onSendMail(bookId, emailToSend) {
 
-        const {errorDefaultLoading} = this.props;
-        const urlToSend = `${createUrl(defaultSettings, urlSettings['sendToMail'])}${bookId}`;
+        const {asyncSendBookToMail} = this.props;
 
-        Axios.post(urlToSend, {
-            params: {
-                email: emailToSend
-            }
-        })
-        .then( (response) => {
-
-            const responseData = response.data || {};
-
-            if (!responseData.isSuccess) {
-                errorDefaultLoading({
-                    errorMessage: responseData.message
-                });
-                return;
-            }
-
-            alert('Книга успешно отправлена по почте.');
-        })
-        .catch((error) => {
-
-            const {message = ''} = error;
-            errorDefaultLoading({
-                errorMessage: message
-            });
-        });
+        asyncSendBookToMail(bookId, emailToSend);
     }
 
     _onDeleteBook(bookId) {
@@ -161,40 +98,14 @@ class Books extends Component {
             return;
         }
 
-        const {errorBooksLoading, startBooksLoading} = this.props;
-        const urlToSend = `${createUrl(defaultSettings, urlSettings['deleteMyBook'])}${bookId}`;
+        const {asyncDeleteBook} = this.props;
 
-        startBooksLoading({});
-
-        Axios.get(urlToSend)
-        .then( (response) => {
-
-            const responseData = response.data || {};
-
-            if (!responseData.isSuccess) {
-                errorBooksLoading({
-                    errorMessage: responseData.message
-                });
-                return;
-            }
-
-            alert('Книга успешно удалена.');
-            this._loadData();
-        })
-        .catch((error) => {
-
-            const {message = ''} = error;
-            errorBooksLoading({
-                errorMessage: message
-            });
-        });
+        asyncDeleteBook(bookId, this._loadData.bind(this));
     }
 
     _renderMyBooks() {
 
         const {history} = this.props;
-        //const {user} = serverData;
-        //const {userIsAdmin} = user;
 
         const {
             disabled,
