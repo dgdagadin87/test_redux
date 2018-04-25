@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import $ from 'jquery';
 
 import PropTypes from 'prop-types';
 
@@ -43,7 +44,7 @@ class PagingComponent extends Component {
     
     _handlerHidePopup(ev) {
 
-        if (ev.target.classList.contains('paging-prevent')) {
+        if ($(ev.target).hasClass('paging-prevent')) {
             return;
         }
 
